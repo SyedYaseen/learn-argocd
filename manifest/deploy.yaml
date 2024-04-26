@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy #Things that refer to this services
+  labels:
+    app: web
+
+# Spec of this deployment
+spec:
+  replicas: 1
+  selector:
+    #This needs to match the label below(inside template)
+    matchLabels:
+      app: web
+
+  #Necessary for updates on the image
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      #Number of pods unavialable at any one time
+      maxUnavailable: 0
+      #Increase number of pods upto 1 during update/rollback
+      maxSurge: 1
+
+  #template that will be used to create the 5 replicas mentioned
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: hello-pod
+          image: nigelpoulton/getting-started-k8s:1.0
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
