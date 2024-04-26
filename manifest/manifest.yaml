@@ -1,0 +1,32 @@
+appName: ubq-mongo-kafka-connect
+config:
+  APP_NAME: ubq-mongo-kafka-connect
+  CONNECT_BATCH_SIZE: '1000012'
+  TEST: something
+
+service:
+  port: 8083
+spec:
+  containerPort: 8083
+  image:
+    name: busybox
+    tag: latest
+  nodePoolSelector: app
+  replicas: 1
+  resources:
+    cpu:
+      limit: '1'
+      request: 500m
+    memory:
+      limit: 4Gi
+      request: 512Mi
+  rollingUpdate:
+    maxSurge: 50%
+    maxUnavailable: 50%
+
+  containers:
+    env:
+      - name: CONNECT_REST_ADVERTISED_HOST_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP

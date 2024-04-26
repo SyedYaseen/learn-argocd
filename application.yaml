@@ -1,22 +1,46 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: busybox
-  namespace: default
+  name: myapp-argo-application
+  namespace: argocd
 spec:
   project: default
+
   source:
     repoURL: https://github.com/SyedYaseen/learn-argocd.git
     targetRevision: HEAD
     path: manifest/
-  destination:
+  destination: 
     server: https://kubernetes.default.svc
     namespace: default
 
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
-
+    - CreateNamespace=true
     automated:
       selfHeal: true
       prune: true
+
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: busybox
+#   namespace: default
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/SyedYaseen/learn-argocd.git
+#     targetRevision: HEAD
+#     path: manifest/
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: default
+
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=true
+
+#     automated:
+#       selfHeal: true
+#       prune: true
